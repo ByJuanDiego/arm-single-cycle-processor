@@ -13,12 +13,12 @@ module alufp(
     wire [7:0]  exponent_a, exponent_b;
     wire [23:0] mantissa_a, mantissa_b;
 
-    // Other signals needed for IEEE-754 processing
+    // RESULTADO: 
     reg         sign_result;
     reg  [7:0]  exponent_result;
     reg  [24:0] mantissa_result; // Need an extra bit for rounding
 
-    // Extract sign, exponent, and mantissa from inputs a and b
+    // Descomposicion de cada numero: 
     assign sign_a = a[31];
     assign exponent_a = a[30:23];
     assign mantissa_a = {1'b1, a[22:0]}; // Append implied leading '1'
@@ -32,7 +32,7 @@ module alufp(
     begin
         // SUM
         if (ALUControl == 2'b00) begin
-            // Add mantissas with alignment of exponents
+            // Calcular diferencias de exponentes
             integer add_exp_diff;
 
             add_exp_diff = exponent_a - exponent_b;
@@ -47,11 +47,13 @@ module alufp(
             // 1.0 * 2^1   +   1.0 * 2^0 =
             // 1.0 * 2^1   +   0.1 * 2^1
             // exponent_result = 1
-            if (add_exp_diff > 0) 
+
+            if (add_exp_diff > 0) // exponente a es mayor, b tiene que ser shifted
                 begin
                     // Shift mantissa_b right to align with mantissa_a
-                    mantissa_b = mantissa_b >> add_exp_diff;
-                    exponent_result = exponent_a;
+                    mantissa_b = mantissa_b >> add_exp_diff; // >> es LSR
+                    
+                    exponent_result = exponent_a; // este es fijo 
                 end 
             else if (add_exp_diff < 0) 
                 begin
@@ -65,26 +67,42 @@ module alufp(
                     exponent_result = exponent_a;
                 end
 
-            // Perform addition of mantissas
+            // Suma de mantisa
             if (sign_a == sign_b) 
                 begin    
-                // Signs are the same, add mantissas directly
                     mantissa_result = mantissa_a + mantissa_b;
-                    sign_result = sign_a;
-                end 
-            else if (mantissa_a > mantissa_b) 
-                begin
-                // Different signs, a > b
-                    mantissa_result = mantissa_a - mantissa_b;
                     sign_result = sign_a;
                 end 
             else 
                 begin
-                // Different signs, b > a
-                mantissa_result = mantissa_b - mantissa_a;
-                sign_result = sign_b;
+                 if (sign_a == 1'b0) // Si a es positivo y b negativo
+                    begin
+                        if(mantissa_b > mantissa_a)
+                        begin
+                            mantissa_result = mantissa_b - mantissa_a;
+                            sign_result = sign_b
+                            end
+                        else if(mantissa_a >= mantissa_b)
+                        begin
+                            mantissa_result = mantissa_a - mantissa_b;
+                            sign_result = sign_a
+                            end
+                    end 
+                    else if (sign_a == 1'b1) // Si b es positivo y a negativo
+                    begin
+                        if(mantissa_b >= mantissa_a)
+                        begin
+                            mantissa_result = mantissa_b - mantissa_a;
+                            sign_result = sign_b
+                            end
+                        else if(mantissa_a > mantissa_b)
+                        begin
+                            mantissa_result = mantissa_a - mantissa_b;
+                            sign_result = sign_a
+                            end
+                    end 
                 end
-
+                
             carry = mantissa_result[24];
 
             // Normalize mantissa_result
