@@ -11,12 +11,12 @@ module alufp(
     // IEEE-754 components of inputs a and b
     wire        sign_a, sign_b;
     wire [7:0]  exponent_a, exponent_b;
-    wire [22:0] mantissa_a, mantissa_b;
+    wire [23:0] mantissa_a, mantissa_b;
 
     // Other signals needed for IEEE-754 processing
     reg         sign_result;
     reg  [7:0]  exponent_result;
-    reg  [23:0] mantissa_result; // Need an extra bit for rounding
+    reg  [24:0] mantissa_result; // Need an extra bit for rounding
 
     // Extract sign, exponent, and mantissa from inputs a and b
     assign sign_a = a[31];
@@ -30,69 +30,75 @@ module alufp(
     // Implement ALU operation (Addition of two floating-point numbers)
     always @(*)
     begin
+        // SUM
         if (ALUControl == 2'b00) begin
             // Add mantissas with alignment of exponents
             integer add_exp_diff;
-            integer signed_mantissa_b;
-            
-            signed_mantissa_b = { ~ b[31], b[22:0] };
 
             add_exp_diff = exponent_a - exponent_b;
 
-            if (add_exp_diff > 0) begin
-                // Shift mantissa_b right to align with mantissa_a
-                mantissa_b = mantissa_b >> add_exp_diff;
-                exponent_result = exponent_a;
-            end else if (add_exp_diff < 0) begin
-                // Shift mantissa_a right to align with mantissa_b
-                mantissa_a = mantissa_a >> (-add_exp_diff);
-                exponent_result = exponent_b;
-            end else begin
-                // Exponents are equal
-                exponent_result = exponent_a;
-            end
+            // Esta parte corresponde a shiftear el operando para que pueda efectuarse 
+            // la suma correctamente
+            // e.g.
+            // a = 2_(10)
+            // b = 1_(10)
+
+            //     a       +       b     =
+            // 1.0 * 2^1   +   1.0 * 2^0 =
+            // 1.0 * 2^1   +   0.1 * 2^1
+            // exponent_result = 1
+            if (add_exp_diff > 0) 
+                begin
+                    // Shift mantissa_b right to align with mantissa_a
+                    mantissa_b = mantissa_b >> add_exp_diff;
+                    exponent_result = exponent_a;
+                end 
+            else if (add_exp_diff < 0) 
+                begin
+                    // Shift mantissa_a right to align with mantissa_b
+                    mantissa_a = mantissa_a >> (-add_exp_diff);
+                    exponent_result = exponent_b;
+                end 
+            else 
+                begin
+                    // Exponents are equal
+                    exponent_result = exponent_a;
+                end
 
             // Perform addition of mantissas
-            if (sign_a == sign_b) begin
+            if (sign_a == sign_b) 
+                begin    
                 // Signs are the same, add mantissas directly
-                mantissa_result = mantissa_a + mantissa_b;
-                sign_result = sign_a;
-            end else if (mantissa_a > mantissa_b) begin
+                    mantissa_result = mantissa_a + mantissa_b;
+                    sign_result = sign_a;
+                end 
+            else if (mantissa_a > mantissa_b) 
+                begin
                 // Different signs, a > b
-                mantissa_result = mantissa_a - mantissa_b;
-                sign_result = sign_a;
-            end else begin
+                    mantissa_result = mantissa_a - mantissa_b;
+                    sign_result = sign_a;
+                end 
+            else 
+                begin
                 // Different signs, b > a
                 mantissa_result = mantissa_b - mantissa_a;
                 sign_result = sign_b;
-            end
+                end
+
+            carry = mantissa_result[24];
 
             // Normalize mantissa_result
-            if (mantissa_result[24]) begin
+            if (mantissa_result[24])
+            begin
                 // Mantissa overflow, shift right and adjust exponent
                 mantissa_result = mantissa_result >> 1;
                 exponent_result = exponent_result + 1;
-            end
-
-            // Round the mantissa_result
-            if (mantissa_result[23:0] > 24'h800000) begin
-                // Round up
-                mantissa_result = mantissa_result + 1;
-                if (mantissa_result[24]) begin
-                    // Mantissa overflow due to rounding
-                    mantissa_result = mantissa_result >> 1;
-                    exponent_result = exponent_result + 1;
-                end
+                
             end
 
             neg = sign_result;
-            zero = (mantissa_result == 24'h000000 && exponent_result == 8'h00);            
-            overflow = (exponent_result > 8'hFF);
-
-            // Determine CARRY flag (context-specific, implement as needed)
-            // Example: Set CARRY flag for rounding carry
-            // ALUFlags[1] = ...;
-
+            zero = (mantissa_result == 25'b0000000000000000000000000 && exponent_result == 8'b00000000);            
+            overflow = (sign_a == 1 && sign_b == 1 && sign_result == 0) | (sign_a == 0 && sign_b == 0 && sign_result == 1);
         end
     end
 
