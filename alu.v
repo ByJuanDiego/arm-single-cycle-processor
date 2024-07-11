@@ -30,8 +30,8 @@ module alu (
 
     always @(*)
     begin
-        mantissa_a = {1'b1, a[22:0]};
-        mantissa_b = {1'b1, b[22:0]};
+        mantissa_a = (exponent_a != 0) ? {1'b1, a[22:0]} : {1'b0, a[22:0]};
+        mantissa_b = (exponent_b != 0) ? {1'b1, b[22:0]} : {1'b0, b[22:0]};
         add_exp_diff = exponent_a - exponent_b;
 
         exponent_result = (add_exp_diff > 0) ? exponent_a :
@@ -63,7 +63,8 @@ module alu (
     always @(*)
     begin
         casex (ALUControl[2:0])
-            3'b00?: Result = sum;                                                   // ALUControl[1:0] = 00
+            3'b000: Result = sum;                                                   // ALUControl[1:0] = 00
+            3'b001: Result = sum;                                                   // ALUControl[1:0] = 00
             3'b010: Result = a & b;                                                 // ALUControl[1:0] = 10
             3'b011: Result = a | b;                                                 // ALUControl[1:0] = 11
             3'b100: Result = {sign_result, exponent_result, mantissa_result[22:0]}; // ALUControl[1:0] = 00

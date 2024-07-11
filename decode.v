@@ -45,7 +45,7 @@ module decode (
 	assign {RegSrc, ImmSrc, ALUSrc, MemtoReg, RegW, MemW, Branch, ALUOp} = controls;
 	always @(*)
 		if (ALUOp) begin
-			case (Funct[4:1])
+			casex (Funct[4:1])
 				4'b0100: ALUControl = 3'b000; //AddNormal 
 				4'b0101: ALUControl = 3'b001;  
 				4'b0010: ALUControl = 3'b010;
