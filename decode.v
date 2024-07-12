@@ -51,6 +51,7 @@ module decode (
 				4'b0010: ALUControl = 3'b010;
 				4'b0000: ALUControl = 3'b011;
 				4'b1100: ALUControl = 3'b100; //AddFloat
+				4'b1101: ALUControl = 3'b101; //Fmul
 				default: ALUControl = 3'bxxx;
 			endcase
 			FlagW[1] = Funct[0];
