@@ -95,6 +95,7 @@ module datapath (
 		.wd2(VecResult), //valor que se guarda en vd2 
 		.vr2(SrcVecA)  // vector source del alu (lo q entra)
 	);
+	
 
 	mux2 #(32) resmux(
 		.d0(ALUResult),
@@ -119,6 +120,13 @@ module datapath (
 		ALUControl,
 		ALUResult,
 		ALUFlags
+	);
+	aluvector aluvec(
+		.imm32(SrcB),
+		.vr2(SrcVecA) , // Vector de entrada
+		.ALUOp(ALUControl),    // Señal de operación de la ALU (0: Suma, 1: Resta, 2: AND, 3: OR)
+		.result(VecResult), // Resultado de la operación ALU para cada elemento del vector
+		.ALUFlags(ALUFlags) // Banderas de la ALU
 	);
 
 endmodule
