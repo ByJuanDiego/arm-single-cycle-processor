@@ -47,5 +47,6 @@ module condlogic (
 	assign FlagWrite = FlagW & {2 {CondEx}};
 	assign RegWrite = RegW & CondEx;
 	assign MemWrite = MemW & CondEx;
+	assign VecWrite = VecW & CondEx;
 	assign PCSrc = PCS & CondEx;
 endmodule

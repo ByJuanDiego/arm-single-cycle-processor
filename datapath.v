@@ -22,6 +22,7 @@ module datapath (
 	input wire [1:0] ImmSrc;
 	input wire ALUSrc;
 	input wire [2:0] ALUControl;
+	input wirte VecWrite;
 	input wire MemtoReg;
 	input wire PCSrc;
 	output wire [3:0] ALUFlags;
@@ -84,6 +85,13 @@ module datapath (
 		.rd1(SrcA),
 		.rd2(WriteData)
 	);
+	vector_regfile vrf(
+		.clk(clk),
+		.we3(VecWrite), // control - decoder 
+		.addr(addr) // que es esto? 
+		.wd() ?? 
+		.rd(VecData) ??
+	)
 	mux2 #(32) resmux(
 		.d0(ALUResult),
 		.d1(ReadData),
