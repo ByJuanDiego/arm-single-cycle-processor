@@ -22,7 +22,7 @@ module datapath (
 	input wire [1:0] ImmSrc;
 	input wire ALUSrc;
 	input wire [2:0] ALUControl;
-	input wirte VecWrite;
+	input wire VecWrite;
 	input wire MemtoReg;
 	input wire PCSrc;
 	output wire [3:0] ALUFlags;
@@ -38,6 +38,7 @@ module datapath (
 	wire [31:0] SrcA;
 	wire [31:0] SrcB;
 	wire [31:0] Result;
+	wire [31:0] VecResult [4:0];
 	wire [3:0] RA1;
 	wire [3:0] RA2;
 	mux2 #(32) pcmux(
@@ -87,11 +88,14 @@ module datapath (
 	);
 	vector_regfile vrf(
 		.clk(clk),
+		.reset(reset),
 		.we3(VecWrite), // control - decoder 
-		.addr(addr) // que es esto? 
-		.wd() ?? 
-		.rd(VecData) ??
-	)
+		.va1(RA1),// direccion de vector de entrada
+		.vd2(Instr[15:12]), // direccion del vector de destino 
+		.wd2(VecResult), //valor que se guarda en vd2 
+		.vr2(SrcVecA)  // vector source del alu (lo q entra)
+	);
+
 	mux2 #(32) resmux(
 		.d0(ALUResult),
 		.d1(ReadData),
@@ -116,4 +120,5 @@ module datapath (
 		ALUResult,
 		ALUFlags
 	);
+
 endmodule
