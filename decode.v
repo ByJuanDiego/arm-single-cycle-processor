@@ -6,6 +6,7 @@ module decode (
 	PCS,
 	RegW,
 	MemW,
+	VecW,
 	MemtoReg,
 	ALUSrc,
 	ImmSrc,

@@ -7,9 +7,11 @@ module condlogic (
 	PCS,
 	RegW,
 	MemW,
+	VecW,
 	PCSrc,
 	RegWrite,
-	MemWrite
+	MemWrite,
+	VecWrite
 );
 	input wire clk;
 	input wire reset;
@@ -19,9 +21,11 @@ module condlogic (
 	input wire PCS;
 	input wire RegW;
 	input wire MemW;
+	input wire VecW;
 	output wire PCSrc;
 	output wire RegWrite;
 	output wire MemWrite;
+	output wire VecWrite;
 	wire [1:0] FlagWrite;
 	wire [3:0] Flags;
 	wire CondEx;

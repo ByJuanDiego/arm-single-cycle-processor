@@ -55,7 +55,7 @@ module controller (
 		.PCS(PCS),
 		.RegW(RegW),
 		.MemW(MemW),
-		.VecW(VecW)
+		.VecW(VecW),
 		.PCSrc(PCSrc),
 		.RegWrite(RegWrite),
 		.MemWrite(MemWrite),

@@ -89,7 +89,7 @@ module datapath (
 	vector_regfile vrf(
 		.clk(clk),
 		.reset(reset),
-		.we3(VecWrite), // control - decoder 
+		.we(VecWrite), // control - decoder 
 		.va1(RA1),// direccion de vector de entrada
 		.vd2(Instr[15:12]), // direccion del vector de destino 
 		.wd2(VecResult), //valor que se guarda en vd2 
