@@ -18,6 +18,7 @@ module datapath (
 	VecWriteData_2,
 	VecWriteData_3,
 	VecWriteData_4,
+	VecWrite,
 	ReadData
 );
 	input wire clk;

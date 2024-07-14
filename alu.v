@@ -67,6 +67,7 @@ module alu (
             3'b010: Result = a & b;                                                 // ALUControl[1:0] = 10
             3'b011: Result = a | b;                                                 // ALUControl[1:0] = 11
             3'b100: Result = {sign_result, exponent_result, mantissa_result[22:0]}; // ALUControl[1:0] = 00
+            3'b101: Result = sum;                                                   // ALUControl[1:0] = 00
             default: Result = 32'b0;                                                // Default case
         endcase
     end

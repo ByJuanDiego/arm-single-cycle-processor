@@ -2,6 +2,11 @@ module top (
 	clk,
 	reset,
 	WriteData,
+	VecWriteData_0,
+	VecWriteData_1,
+	VecWriteData_2,
+	VecWriteData_3,
+	VecWriteData_4,
 	DataAdr,
 	MemWrite
 );

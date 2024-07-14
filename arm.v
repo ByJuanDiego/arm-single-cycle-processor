@@ -29,6 +29,7 @@ module arm (
 	input wire [31:0] ReadData;
 	wire [3:0] ALUFlags;
 	wire RegWrite;
+	wire VecWrite;
 	wire ALUSrc;
 	wire MemtoReg;
 	wire PCSrc;
@@ -47,7 +48,8 @@ module arm (
 		.ALUControl(ALUControl),
 		.MemWrite(MemWrite),
 		.MemtoReg(MemtoReg),
-		.PCSrc(PCSrc)
+		.PCSrc(PCSrc),
+		.VecWrite(VecWrite)
 	);
 	datapath dp(
 		.clk(clk),
@@ -69,6 +71,7 @@ module arm (
 		.VecWriteData_2(VecWriteData_2),
 		.VecWriteData_3(VecWriteData_3),
 		.VecWriteData_4(VecWriteData_4),
+		.VecWrite(VecWrite),
 		.ReadData(ReadData)
 	);
 endmodule
