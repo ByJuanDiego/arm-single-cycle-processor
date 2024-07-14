@@ -10,7 +10,8 @@ module controller (
 	ALUControl,
 	MemWrite,
 	MemtoReg,
-	PCSrc
+	PCSrc,
+	VecWrite
 );
 	input wire clk;
 	input wire reset;
@@ -20,12 +21,14 @@ module controller (
 	output wire RegWrite;
 	output wire [1:0] ImmSrc;
 	output wire ALUSrc;
-	output wire [1:0] ALUControl;
+	output wire [3:0] ALUControl;
 	output wire MemWrite;
 	output wire MemtoReg;
+	output wire VecWrite;
 	output wire PCSrc;
 	wire [1:0] FlagW;
 	wire PCS;
+	wire VecW;
 	wire RegW;
 	wire MemW;
 	decode dec(
@@ -36,6 +39,7 @@ module controller (
 		.PCS(PCS),
 		.RegW(RegW),
 		.MemW(MemW),
+		.VecW(VecW),
 		.MemtoReg(MemtoReg),
 		.ALUSrc(ALUSrc),
 		.ImmSrc(ImmSrc),
@@ -51,8 +55,10 @@ module controller (
 		.PCS(PCS),
 		.RegW(RegW),
 		.MemW(MemW),
+		.VecW(VecW),
 		.PCSrc(PCSrc),
 		.RegWrite(RegWrite),
-		.MemWrite(MemWrite)
+		.MemWrite(MemWrite),
+		.VecWrite(VecWrite)
 	);
 endmodule
