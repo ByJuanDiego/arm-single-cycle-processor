@@ -6,6 +6,11 @@ module arm (
 	MemWrite,
 	ALUResult,
 	WriteData,
+	VecWriteData_0,
+	VecWriteData_1,
+	VecWriteData_2,
+	VecWriteData_3,
+	VecWriteData_4,
 	ReadData
 );
 	input wire clk;
@@ -15,6 +20,12 @@ module arm (
 	output wire MemWrite;
 	output wire [31:0] ALUResult;
 	output wire [31:0] WriteData;
+	output wire [31:0] VecWriteData_0;
+	output wire [31:0] VecWriteData_1;
+	output wire [31:0] VecWriteData_2;
+	output wire [31:0] VecWriteData_3;
+	output wire [31:0] VecWriteData_4;
+
 	input wire [31:0] ReadData;
 	wire [3:0] ALUFlags;
 	wire RegWrite;
@@ -53,6 +64,11 @@ module arm (
 		.Instr(Instr),
 		.ALUResult(ALUResult),
 		.WriteData(WriteData),
+		.VecWriteData_0(VecWriteData_0),
+		.VecWriteData_1(VecWriteData_1),
+		.VecWriteData_2(VecWriteData_2),
+		.VecWriteData_3(VecWriteData_3),
+		.VecWriteData_4(VecWriteData_4),
 		.ReadData(ReadData)
 	);
 endmodule

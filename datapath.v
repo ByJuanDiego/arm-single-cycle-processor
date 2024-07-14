@@ -13,6 +13,11 @@ module datapath (
 	Instr,
 	ALUResult,
 	WriteData,
+	VecWriteData_0,
+	VecWriteData_1,
+	VecWriteData_2,
+	VecWriteData_3,
+	VecWriteData_4,
 	ReadData
 );
 	input wire clk;
@@ -30,6 +35,12 @@ module datapath (
 	input wire [31:0] Instr;
 	output wire [31:0] ALUResult;
 	output wire [31:0] WriteData;
+	output wire [31:0] VecWriteData_0;
+	output wire [31:0] VecWriteData_1;
+	output wire [31:0] VecWriteData_2;
+	output wire [31:0] VecWriteData_3;
+	output wire [31:0] VecWriteData_4;
+
 	input wire [31:0] ReadData;
 	wire [31:0] PCNext;
 	wire [31:0] PCPlus4;
@@ -38,7 +49,12 @@ module datapath (
 	wire [31:0] SrcA;
 	wire [31:0] SrcB;
 	wire [31:0] Result;
-	wire [31:0] VecResult [4:0];
+	wire [31:0] VecSrc_0;
+	wire [31:0] VecSrc_1;
+	wire [31:0] VecSrc_2;
+	wire [31:0] VecSrc_3;
+	wire [31:0] VecSrc_4;
+
 	wire [3:0] RA1;
 	wire [3:0] RA2;
 	mux2 #(32) pcmux(
@@ -86,17 +102,25 @@ module datapath (
 		.rd1(SrcA),
 		.rd2(WriteData)
 	);
+
 	vector_regfile vrf(
 		.clk(clk),
 		.reset(reset),
 		.we(VecWrite), // control - decoder 
 		.va1(RA1),// direccion de vector de entrada
 		.vd2(Instr[15:12]), // direccion del vector de destino 
-		.wd2(VecResult), //valor que se guarda en vd2 
-		.vr2(SrcVecA)  // vector source del alu (lo q entra)
+		.wd2_0(VecWriteData_0),
+		.wd2_1(VecWriteData_1),
+		.wd2_2(VecWriteData_2),
+		.wd2_3(VecWriteData_3),
+		.wd2_4(VecWriteData_4),
+		.vr2_0(VecSrc_0),
+		.vr2_1(VecSrc_1),
+		.vr2_2(VecSrc_2),
+		.vr2_3(VecSrc_3),
+		.vr2_4(VecSrc_4)
 	);
 	
-
 	mux2 #(32) resmux(
 		.d0(ALUResult),
 		.d1(ReadData),
@@ -121,12 +145,20 @@ module datapath (
 		ALUResult,
 		ALUFlags
 	);
+
 	aluvector aluvec(
 		.imm32(SrcB),
-		.vr2(SrcVecA) , // Vector de entrada
+		.vr2_0(VecSrc_0), // Vector de entrada
+		.vr2_1(VecSrc_1),
+		.vr2_2(VecSrc_2), // Vector de entrada
+		.vr2_3(VecSrc_3),
+		.vr2_4(VecSrc_4), // Vector de entrada
 		.ALUOp(ALUControl),    // Señal de operación de la ALU (0: Suma, 1: Resta, 2: AND, 3: OR)
-		.result(VecResult), // Resultado de la operación ALU para cada elemento del vector
-		.ALUFlags(ALUFlags) // Banderas de la ALU
+		.result_0(VecWriteData_0),
+		.result_1(VecWriteData_1),
+		.result_2(VecWriteData_2),
+		.result_3(VecWriteData_3),
+		.result_4(VecWriteData_4)
 	);
 
 endmodule

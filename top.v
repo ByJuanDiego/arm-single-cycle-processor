@@ -8,6 +8,12 @@ module top (
 	input wire clk;
 	input wire reset;
 	output wire [31:0] WriteData;
+	output wire [31:0] VecWriteData_0;
+	output wire [31:0] VecWriteData_1;
+	output wire [31:0] VecWriteData_2;
+	output wire [31:0] VecWriteData_3;
+	output wire [31:0] VecWriteData_4;
+
 	output wire [31:0] DataAdr;
 	output wire MemWrite;
 	wire [31:0] PC;
@@ -21,6 +27,11 @@ module top (
 		.MemWrite(MemWrite),
 		.ALUResult(DataAdr),
 		.WriteData(WriteData),
+		.VecWriteData_0(VecWriteData_0),
+		.VecWriteData_1(VecWriteData_1),
+		.VecWriteData_2(VecWriteData_2),
+		.VecWriteData_3(VecWriteData_3),
+		.VecWriteData_4(VecWriteData_4),
 		.ReadData(ReadData)
 	);
 	imem imem(

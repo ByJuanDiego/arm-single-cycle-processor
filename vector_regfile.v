@@ -1,10 +1,16 @@
 module vector_regfile (
     input wire clk,
     input wire we,
-    input wire reset, 
+    input wire reset,
+
     input wire [3:0] va1, // número del vector de entrada 
     input wire [3:0] vd2, // número vector destino  
-    input wire [31:0] result_1,
+    
+    input wire [31:0] wd2_0, // valor de escritura de vector elemento 0
+    input wire [31:0] wd2_1, // valor de escritura de vector elemento 1
+    input wire [31:0] wd2_2, // valor de escritura de vector elemento 2
+    input wire [31:0] wd2_3, // valor de escritura de vector elemento 3
+    input wire [31:0] wd2_4, // valor de escritura de vector elemento 4
     
     output wire [31:0] vr2_0, // valor del vector de entrada, elemento 0
     output wire [31:0] vr2_1, // valor del vector de entrada, elemento 1
@@ -40,11 +46,11 @@ module vector_regfile (
             // Lógica de escritura cuando we está activo
             if (we) begin
                 // Escribir el valor en el vector destino vd2
-                vreg[vd2][0] <= wd2[0];
-                vreg[vd2][1] <= wd2[1];
-                vreg[vd2][2] <= wd2[2];
-                vreg[vd2][3] <= wd2[3];
-                vreg[vd2][4] <= wd2[4];
+                vreg[vd2][0] <= wd2_0;
+                vreg[vd2][1] <= wd2_1;
+                vreg[vd2][2] <= wd2_2;
+                vreg[vd2][3] <= wd2_3;
+                vreg[vd2][4] <= wd2_4;
             end
         end
     end
