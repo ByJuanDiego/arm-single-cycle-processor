@@ -27,7 +27,7 @@ module datapath (
 	input wire RegWrite;
 	input wire [1:0] ImmSrc;
 	input wire ALUSrc;
-	input wire [2:0] ALUControl;
+	input wire [3:0] ALUControl;
 	input wire VecWrite;
 	input wire MemtoReg;
 	input wire PCSrc;
@@ -142,24 +142,24 @@ module datapath (
 	alu alu(
 		SrcA,
 		SrcB,
-		ALUControl,
+		ALUControl[2:0],
 		ALUResult,
 		ALUFlags
 	);
 
 	aluvector aluvec(
 		.imm32(SrcB),
-		.vr2_0(VecSrc_0), // Vector de entrada
-		.vr2_1(VecSrc_1),
-		.vr2_2(VecSrc_2), // Vector de entrada
-		.vr2_3(VecSrc_3),
-		.vr2_4(VecSrc_4), // Vector de entrada
-		.ALUOp(ALUControl),    // Señal de operación de la ALU (0: Suma, 1: Resta, 2: AND, 3: OR)
-		.result_0(VecWriteData_0),
-		.result_1(VecWriteData_1),
-		.result_2(VecWriteData_2),
-		.result_3(VecWriteData_3),
-		.result_4(VecWriteData_4)
+		.a_0(VecSrc_0), // Vector de entrada
+		.a_1(VecSrc_1),
+		.a_2(VecSrc_2), // Vector de entrada
+		.a_3(VecSrc_3),
+		.a_4(VecSrc_4), // Vector de entrada
+		.ALUOp(ALUControl[2:0]),    // Señal de operación de la ALU (0: Suma, 1: Resta, 2: AND, 3: OR)
+		.Result_0(VecWriteData_0),
+		.Result_1(VecWriteData_1),
+		.Result_2(VecWriteData_2),
+		.Result_3(VecWriteData_3),
+		.Result_4(VecWriteData_4)
 	);
 
 endmodule

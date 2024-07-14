@@ -21,7 +21,7 @@ module controller (
 	output wire RegWrite;
 	output wire [1:0] ImmSrc;
 	output wire ALUSrc;
-	output wire [2:0] ALUControl;
+	output wire [3:0] ALUControl;
 	output wire MemWrite;
 	output wire MemtoReg;
 	output wire VecWrite;

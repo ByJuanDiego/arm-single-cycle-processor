@@ -25,7 +25,7 @@ module decode (
 	output wire VecW;
 	output wire [1:0] ImmSrc;
 	output wire [1:0] RegSrc;
-	output reg [2:0] ALUControl;
+	output reg [3:0] ALUControl;
 	reg [10:0] controls;
 	wire Branch;
 	wire ALUOp;
@@ -33,8 +33,8 @@ module decode (
 		casex (Op)
 			2'b00:
 				if (Funct[5])
-					if (Funct[4:1] ==  4'b1001) //si esq cmd es de tipo vectoradd: 
-						controls = 11'b10000101001;
+					if (Funct[4:3] ==  2'b10) //si es que es de tipo Vec
+						controls = 11'b10000100001;
 					else
 						controls = 11'b00000101001;
 				else
@@ -51,19 +51,26 @@ module decode (
 	always @(*)
 		if (ALUOp) begin
 			case (Funct[4:1])
-				4'b0100: ALUControl = 3'b000; //AddNormal 
-				4'b0101: ALUControl = 3'b001;  
-				4'b0010: ALUControl = 3'b010;
-				4'b0000: ALUControl = 3'b011;
-				4'b1100: ALUControl = 3'b100; //AddFloat
-				4'b1001: ALUControl = 3'b101; //AddVector 
-				default: ALUControl = 3'bxxx;
+				// Integer number control
+				4'b0100: ALUControl = 4'b0000; // ADD
+				4'b0101: ALUControl = 4'b0001; // SUB
+				4'b0010: ALUControl = 4'b0010; // AND
+				4'b0000: ALUControl = 4'b0011; // ORR
+				// Floating point control
+				4'b1100: ALUControl = 4'b0100; // FADD
+				4'b1100: ALUControl = 4'b0101; // FMUL
+				// Vector control
+				4'b1000: ALUControl = 4'b1000; // VADD
+				4'b1001: ALUControl = 4'b1001; // VSUB
+				4'b1010: ALUControl = 4'b1010; // VAND
+				4'b1011: ALUControl = 4'b1011; // VORR
+				default: ALUControl = 4'bxxxx;
 			endcase
 			FlagW[1] = Funct[0];
-			FlagW[0] = Funct[0] & ((ALUControl == 3'b000) | (ALUControl == 3'b010));
+			FlagW[0] = Funct[0] & ((ALUControl == 4'b0000) | (ALUControl == 4'b0001));
 		end
 		else begin
-			ALUControl = 3'b000;
+			ALUControl = 4'b0000;
 			FlagW = 2'b00;
 		end
 	assign PCS = ((Rd == 4'b1111) & RegW) | Branch;
