@@ -4,6 +4,8 @@ module vector_regfile (
     input wire reset,
 
     input wire [3:0] va1, // número del vector de entrada 
+    input wire [3:0] va2 // numero del segundo vector de entrada 
+
     input wire [3:0] vd2, // número vector destino  
     
     input wire [31:0] wd2_0, // valor de escritura de vector elemento 0
@@ -12,6 +14,12 @@ module vector_regfile (
     input wire [31:0] wd2_3, // valor de escritura de vector elemento 3
     input wire [31:0] wd2_4, // valor de escritura de vector elemento 4
     
+    output wire [31:0] vr1_0, // valor del vector de entrada, elemento 0
+    output wire [31:0] vr1_1, // valor del vector de entrada, elemento 1
+    output wire [31:0] vr1_2, // valor del vector de entrada, elemento 2
+    output wire [31:0] vr1_3, // valor del vector de entrada, elemento 3
+    output wire [31:0] vr1_4  // valor del vector de entrada, elemento 4
+
     output wire [31:0] vr2_0, // valor del vector de entrada, elemento 0
     output wire [31:0] vr2_1, // valor del vector de entrada, elemento 1
     output wire [31:0] vr2_2, // valor del vector de entrada, elemento 2
@@ -56,10 +64,17 @@ module vector_regfile (
     end
 
     // Asignación de los valores de salida
-    assign vr2_0 = vreg[va1][0];
-    assign vr2_1 = vreg[va1][1];
-    assign vr2_2 = vreg[va1][2];
-    assign vr2_3 = vreg[va1][3];
-    assign vr2_4 = vreg[va1][4];
+    assign vr1_0 = vreg[va1][0];
+    assign vr1_1 = vreg[va1][1];
+    assign vr1_2 = vreg[va1][2];
+    assign vr1_3 = vreg[va1][3];
+    assign vr1_4 = vreg[va1][4];
+
+    assign vr2_0 = vreg[va2][0];
+    assign vr2_1 = vreg[va2][1];
+    assign vr2_2 = vreg[va2][2];
+    assign vr2_3 = vreg[va2][3];
+    assign vr2_4 = vreg[va2][4];
+
 
 endmodule

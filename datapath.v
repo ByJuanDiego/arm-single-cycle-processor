@@ -50,11 +50,23 @@ module datapath (
 	wire [31:0] SrcA;
 	wire [31:0] SrcB;
 	wire [31:0] Result;
-	wire [31:0] VecSrc_0;
-	wire [31:0] VecSrc_1;
-	wire [31:0] VecSrc_2;
-	wire [31:0] VecSrc_3;
-	wire [31:0] VecSrc_4;
+	wire [31:0] VecSrc1_0;
+	wire [31:0] VecSrc1_1;
+	wire [31:0] VecSrc1_2;
+	wire [31:0] VecSrc1_3;
+	wire [31:0] VecSrc1_4;
+	wire [31:0] VecSrc2_0;
+	wire [31:0] VecSrc2_1;
+	wire [31:0] VecSrc2_2;
+	wire [31:0] VecSrc2_3;
+	wire [31:0] VecSrc2_4;
+
+	wire [31:0] SrcV0B;
+	wire [31:0] SrcV1B;
+	wire [31:0] SrcV2B;
+	wire [31:0] SrcV3B;
+	wire [31:0] SrcV4B;
+
 
 	wire [3:0] RA1;
 	wire [3:0] RA2;
@@ -115,11 +127,16 @@ module datapath (
 		.wd2_2(VecWriteData_2),
 		.wd2_3(VecWriteData_3),
 		.wd2_4(VecWriteData_4),
-		.vr2_0(VecSrc_0),
-		.vr2_1(VecSrc_1),
-		.vr2_2(VecSrc_2),
-		.vr2_3(VecSrc_3),
-		.vr2_4(VecSrc_4)
+		.vr1_0(VecSrc1_0),
+		.vr1_1(VecSrc1_1),
+		.vr1_2(VecSrc1_2),
+		.vr1_3(VecSrc1_3),
+		.vr1_4(VecSrc1_4),
+		.vr2_0(VecSrc2_0),
+		.vr2_1(VecSrc2_1),
+		.vr2_2(VecSrc2_2),
+		.vr2_3(VecSrc2_3),
+		.vr2_4(VecSrc2_4)
 	);
 	
 	mux2 #(32) resmux(
@@ -139,6 +156,43 @@ module datapath (
 		.s(ALUSrc),
 		.y(SrcB)
 	);
+
+	mux2 #(32) srcbv0mux(
+			.d0(VecSrc2_0),
+			.d1(ExtImm),
+			.s(ALUSrc),
+			.y(SrcV0B)
+	);
+
+	mux2 #(32) srcbv1mux(
+			.d0(VecSrc2_1),
+			.d1(ExtImm),
+			.s(ALUSrc),
+			.y(SrcV1B)
+	);
+
+	mux2 #(32) srcbv2mux(
+			.d0(VecSrc2_2),
+			.d1(ExtImm),
+			.s(ALUSrc),
+			.y(SrcV2B)
+	);
+
+	mux2 #(32) srcbv3mux(
+			.d0(VecSrc2_3),
+			.d1(ExtImm),
+			.s(ALUSrc),
+			.y(SrcV3B)
+	);
+
+	mux2 #(32) srcbv4mux(
+			.d0(VecSrc2_4),
+			.d1(ExtImm),
+			.s(ALUSrc),
+			.y(SrcV4B)
+	);
+
+
 	alu alu(
 		SrcA,
 		SrcB,
@@ -148,12 +202,16 @@ module datapath (
 	);
 
 	aluvector aluvec(
-		.imm32(SrcB),
 		.a_0(VecSrc_0), // Vector de entrada
 		.a_1(VecSrc_1),
 		.a_2(VecSrc_2), // Vector de entrada
 		.a_3(VecSrc_3),
 		.a_4(VecSrc_4), // Vector de entrada
+		.b_0(SrcV0B), // Vector de entrada
+		.b_1(SrcV1B),
+		.b_2(SrcV2B), // Vector de entrada
+		.b_3(SrcV3B),
+		.b_4(SrcV4B), // Vector de entrada
 		.ALUOp(ALUControl[2:0]),    // Señal de operación de la ALU (0: Suma, 1: Resta, 2: AND, 3: OR)
 		.Result_0(VecWriteData_0),
 		.Result_1(VecWriteData_1),
