@@ -33,7 +33,7 @@ module decode (
 		casex (Op)
 			2'b00:
 				if (Funct[5])
-					if (Funct[4:3] ==  2'b10) //si es que es de tipo Vec
+					if (Funct[4:1] ==  4'b1000) //si es que es de tipo Vec
 						controls = 11'b10000100001;
 					else
 						controls = 11'b00000101001;
@@ -53,17 +53,17 @@ module decode (
 			case (Funct[4:1])
 				// Integer number control
 				4'b0100: ALUControl = 4'b0000; // ADD
-				4'b0101: ALUControl = 4'b0001; // SUB
-				4'b0010: ALUControl = 4'b0010; // AND
-				4'b0000: ALUControl = 4'b0011; // ORR
+				4'b0010: ALUControl = 4'b0001; // SUB
+				4'b0000: ALUControl = 4'b0010; // AND
+				4'b1100: ALUControl = 4'b0011; // ORR
 				// Floating point control
-				4'b1100: ALUControl = 4'b0100; // FADD
-				4'b1100: ALUControl = 4'b0101; // FMUL
+				4'b1000: ALUControl = 4'b0100; // FADD
+				4'b1001: ALUControl = 4'b0101; // FMUL
 				// Vector control
-				4'b1000: ALUControl = 4'b1000; // VADD
-				4'b1001: ALUControl = 4'b1001; // VSUB
-				4'b1010: ALUControl = 4'b1010; // VAND
-				4'b1011: ALUControl = 4'b1011; // VORR
+				4'b1010: ALUControl = 4'b1000; // VADD
+				4'b1011: ALUControl = 4'b1001; // VSUB
+				4'b1101: ALUControl = 4'b1010; // VAND
+				4'b1111: ALUControl = 4'b1011; // VORR
 				default: ALUControl = 4'bxxxx;
 			endcase
 			FlagW[1] = Funct[0];

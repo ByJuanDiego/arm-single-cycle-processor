@@ -139,12 +139,13 @@ module datapath (
 		.s(ALUSrc),
 		.y(SrcB)
 	);
+
 	alu alu(
-		SrcA,
-		SrcB,
-		ALUControl[2:0],
-		ALUResult,
-		ALUFlags
+		.a(SrcA),
+		.b(SrcB),
+		.ALUControl(ALUControl[2:0]),
+		.Result(ALUResult),
+		.ALUFlags(ALUFlags)
 	);
 
 	aluvector aluvec(
