@@ -116,11 +116,12 @@ module datapath (
 		.rd2(WriteData)
 	);
 
-	vector_regfile vrf(
+	vecfile vrf(
 		.clk(clk),
 		.reset(reset),
 		.we(VecWrite), // control - decoder 
 		.va1(RA1),// direccion de vector de entrada
+		.va2(Instr[3:0]),
 		.vd2(Instr[15:12]), // direccion del vector de destino 
 		.wd2_0(VecWriteData_0),
 		.wd2_1(VecWriteData_1),
@@ -201,12 +202,12 @@ module datapath (
 		ALUFlags
 	);
 
-	aluvector aluvec(
-		.a_0(VecSrc_0), // Vector de entrada
-		.a_1(VecSrc_1),
-		.a_2(VecSrc_2), // Vector de entrada
-		.a_3(VecSrc_3),
-		.a_4(VecSrc_4), // Vector de entrada
+	aluvec aluvec(
+		.a_0(VecSrc1_0), // Vector de entrada
+		.a_1(VecSrc1_1),
+		.a_2(VecSrc1_2), // Vector de entrada
+		.a_3(VecSrc1_3),
+		.a_4(VecSrc1_4), // Vector de entrada
 		.b_0(SrcV0B), // Vector de entrada
 		.b_1(SrcV1B),
 		.b_2(SrcV2B), // Vector de entrada

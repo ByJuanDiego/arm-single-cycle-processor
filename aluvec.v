@@ -1,4 +1,4 @@
-module aluvector (
+module aluvec (
     input wire [31:0] a_0, // Vector de entrada, elemento 0
     input wire [31:0] a_1, // Vector de entrada, elemento 1
     input wire [31:0] a_2, // Vector de entrada, elemento 2

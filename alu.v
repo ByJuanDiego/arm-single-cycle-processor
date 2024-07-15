@@ -32,6 +32,7 @@ module alu (
             3'b00?: Result = sum;        // ALUControl[1:0] = 00
             3'b010: Result = a & b;      // ALUControl[1:0] = 10
             3'b011: Result = a | b;      // ALUControl[1:0] = 11
+            3'b111: Result = a ^ b;      // ALUControl[1:0] XOR
             3'b100: Result = add_result; // ALUControl[1:0] = 00
             3'b101: Result = mul_result;
             default: Result = 32'b0;     // Default case

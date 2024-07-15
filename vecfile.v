@@ -1,10 +1,10 @@
-module vector_regfile (
+module vecfile (
     input wire clk,
     input wire we,
     input wire reset,
 
     input wire [3:0] va1, // número del vector de entrada 
-    input wire [3:0] va2 // numero del segundo vector de entrada 
+    input wire [3:0] va2 ,// numero del segundo vector de entrada 
 
     input wire [3:0] vd2, // número vector destino  
     
@@ -18,7 +18,7 @@ module vector_regfile (
     output wire [31:0] vr1_1, // valor del vector de entrada, elemento 1
     output wire [31:0] vr1_2, // valor del vector de entrada, elemento 2
     output wire [31:0] vr1_3, // valor del vector de entrada, elemento 3
-    output wire [31:0] vr1_4  // valor del vector de entrada, elemento 4
+    output wire [31:0] vr1_4 , // valor del vector de entrada, elemento 4
 
     output wire [31:0] vr2_0, // valor del vector de entrada, elemento 0
     output wire [31:0] vr2_1, // valor del vector de entrada, elemento 1
