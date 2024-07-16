@@ -33,10 +33,12 @@ module decode (
 		casex (Op)
 			2'b00:
 				if (Funct[5])
-					if (Funct[4]) //si es que es de tipo Vec con imm 
-						controls = 11'b10000100001;
-					else
-						
+					if (Funct[4:1] == 4'b1110) // MOV a reg
+						controls = 11'b00011101001;
+					else 
+						if (Funct[4]) //si es que es de tipo Vec con imm 
+							controls = 11'b10000100001;
+						else		
 							controls = 11'b00000101001;
 				else
 					if (Funct[4]) //si es que es de tipo Vec con vec
@@ -55,6 +57,8 @@ module decode (
 	always @(*)
 		if (ALUOp) begin
 			case (Funct[4:1])
+				4'b1110: ALUControl = 4'b0000; // MOV
+				4'b1101: ALUControl = 4'b1100; // MOVFP
 				// Integer number control
 				4'b0100: ALUControl = 4'b0000; // ADD
 				4'b0101: ALUControl = 4'b0001; // SUB
@@ -66,6 +70,7 @@ module decode (
 				4'b0110: ALUControl = 4'b0101; // FMUL
 				// Vector control
 				4'b1000: ALUControl = 4'b1000; // VADD
+				4'b1100: ALUControl = 4'b1101; // VADDFP
 				4'b1001: ALUControl = 4'b1001; // VSUB
 				4'b1010: ALUControl = 4'b1010; // VAND
 				4'b1011: ALUControl = 4'b1011; // VORR
