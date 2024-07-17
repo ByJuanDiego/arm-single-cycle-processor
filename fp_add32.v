@@ -1,4 +1,4 @@
-module fp_add (
+module fp_add32 (
     input  [31:0] a, b,
     output reg [31:0] result,
     output reg neg, zero, carry, overflow

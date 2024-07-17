@@ -16,7 +16,7 @@ module alu (
     
     wire neg_fpadd, zero_fpadd, carry_fpadd, overflow_fpadd;
 
-    fp_add add (
+    fp_add32 add32 (
         .a(a),
         .b(b),
         .result(add_result),
@@ -26,7 +26,7 @@ module alu (
         .overflow(overflow_fpadd)
     );
 
-    fp_mul mul (
+    fp_mul32 mul32 (
         .a(a),
         .b(b),
         .result(mul_result)

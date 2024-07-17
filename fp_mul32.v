@@ -1,4 +1,4 @@
-module fp_mul (
+module fp_mul32 (
     input  [31:0] a, b,
     output reg [31:0] result
 );
