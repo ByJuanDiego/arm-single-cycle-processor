@@ -8,10 +8,12 @@ module condlogic (
 	RegW,
 	MemW,
 	VecW,
+	VecIdxW,
 	PCSrc,
 	RegWrite,
 	MemWrite,
-	VecWrite
+	VecWrite,
+	VecIdxWrite
 );
 	input wire clk;
 	input wire reset;
@@ -22,10 +24,12 @@ module condlogic (
 	input wire RegW;
 	input wire MemW;
 	input wire VecW;
+	input wire VecIdxW;
 	output wire PCSrc;
 	output wire RegWrite;
 	output wire MemWrite;
 	output wire VecWrite;
+	output wire VecIdxWrite;
 	wire [1:0] FlagWrite;
 	wire [3:0] Flags;
 	wire CondEx;
@@ -52,5 +56,6 @@ module condlogic (
 	assign RegWrite = RegW & CondEx;
 	assign MemWrite = MemW & CondEx;
 	assign VecWrite = VecW & CondEx;
+	assign VecIdxWrite = VecIdxW & CondEx;
 	assign PCSrc = PCS & CondEx;
 endmodule

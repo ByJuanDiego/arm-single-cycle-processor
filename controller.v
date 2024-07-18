@@ -11,7 +11,8 @@ module controller (
 	MemWrite,
 	MemtoReg,
 	PCSrc,
-	VecWrite
+	VecWrite,
+	VecIdxWrite
 );
 	input wire clk;
 	input wire reset;
@@ -25,12 +26,14 @@ module controller (
 	output wire MemWrite;
 	output wire MemtoReg;
 	output wire VecWrite;
+	output wire VecIdxWrite;
 	output wire PCSrc;
 	wire [1:0] FlagW;
 	wire PCS;
 	wire VecW;
 	wire RegW;
 	wire MemW;
+	wire VecIdxW;
 	decode dec(
 		.Op(Instr[27:26]),
 		.Funct(Instr[25:20]),
@@ -40,6 +43,7 @@ module controller (
 		.RegW(RegW),
 		.MemW(MemW),
 		.VecW(VecW),
+		.VecIdxW(VecIdxW),
 		.MemtoReg(MemtoReg),
 		.ALUSrc(ALUSrc),
 		.ImmSrc(ImmSrc),
@@ -56,9 +60,11 @@ module controller (
 		.RegW(RegW),
 		.MemW(MemW),
 		.VecW(VecW),
+		.VecIdxW(VecIdxW),
 		.PCSrc(PCSrc),
 		.RegWrite(RegWrite),
 		.MemWrite(MemWrite),
-		.VecWrite(VecWrite)
+		.VecWrite(VecWrite),
+		.VecIdxWrite(VecIdxWrite)
 	);
 endmodule

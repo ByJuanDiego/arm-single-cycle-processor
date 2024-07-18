@@ -19,7 +19,8 @@ module datapath (
 	VecWriteData_3,
 	VecWriteData_4,
 	VecWrite,
-	ReadData
+	ReadData,
+	VecIdxWrite
 );
 	input wire clk;
 	input wire reset;
@@ -29,6 +30,7 @@ module datapath (
 	input wire ALUSrc;
 	input wire [3:0] ALUControl;
 	input wire VecWrite;
+	input wire VecIdxWrite;
 	input wire MemtoReg;
 	input wire PCSrc;
 	output wire [3:0] ALUFlags;
@@ -122,7 +124,7 @@ module datapath (
 		.we(VecWrite), // control - decoder 
 		.va1(RA1),// direccion de vector de entrada
 		.va2(Instr[3:0]),
-		.vd2(Instr[15:12]), // direccion del vector de destino 
+		.vd2(Instr[19:16]), // direccion del vector de destino 
 		.wd2_0(VecWriteData_0),
 		.wd2_1(VecWriteData_1),
 		.wd2_2(VecWriteData_2),
@@ -137,9 +139,12 @@ module datapath (
 		.vr2_1(VecSrc2_1),
 		.vr2_2(VecSrc2_2),
 		.vr2_3(VecSrc2_3),
-		.vr2_4(VecSrc2_4)
+		.vr2_4(VecSrc2_4),
+		.we_idx(VecIdxWrite),
+		.vd_idx(Instr[14:12]),
+		.ext_imm(ExtImm)
 	);
-	
+
 	mux2 #(32) resmux(
 		.d0(ALUResult),
 		.d1(ReadData),

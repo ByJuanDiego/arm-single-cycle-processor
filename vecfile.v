@@ -1,13 +1,16 @@
 module vecfile (
     input wire clk,
     input wire we,
+    input wire we_idx, // 1 si solo se escribe 1 elemento
     input wire reset,
 
     input wire [3:0] va1, // número del vector de entrada 
     input wire [3:0] va2 ,// numero del segundo vector de entrada 
 
-    input wire [3:0] vd2, // número vector destino  
-    
+    input wire [3:0] vd2,     // número vector destino  
+    input wire [2:0] vd_idx,  // indice del elemento del vector de destino
+    input wire [31:0] ext_imm, // valor
+
     input wire [31:0] wd2_0, // valor de escritura de vector elemento 0
     input wire [31:0] wd2_1, // valor de escritura de vector elemento 1
     input wire [31:0] wd2_2, // valor de escritura de vector elemento 2
@@ -60,6 +63,16 @@ module vecfile (
                 vreg[vd2][3] <= wd2_3;
                 vreg[vd2][4] <= wd2_4;
             end
+            else
+                if (we_idx) begin                 
+                    case (vd_idx)
+                        3'b000: vreg[vd2][0] <= ext_imm;
+                        3'b001: vreg[vd2][1] <= ext_imm;
+                        3'b010: vreg[vd2][2] <= ext_imm;
+                        3'b011: vreg[vd2][3] <= ext_imm;
+                        3'b100: vreg[vd2][4] <= ext_imm;
+                    endcase
+                end
         end
     end
 

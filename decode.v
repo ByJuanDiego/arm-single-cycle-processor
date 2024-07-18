@@ -7,6 +7,7 @@ module decode (
 	RegW,
 	MemW,
 	VecW,
+	VecIdxW,
 	MemtoReg,
 	ALUSrc,
 	ImmSrc,
@@ -23,42 +24,46 @@ module decode (
 	output wire MemtoReg;
 	output wire ALUSrc;
 	output wire VecW;
+	output wire VecIdxW;
 	output wire [1:0] ImmSrc;
 	output wire [1:0] RegSrc;
 	output reg [3:0] ALUControl;
-	reg [10:0] controls;
+	reg [11:0] controls;
 	wire Branch;
 	wire ALUOp;
 	always @(*)
 		casex (Op)
 			2'b00:
 				if (Funct[5])
-					if (Funct[4:1] == 4'b1110) // MOV a reg
-						controls = 11'b00011101001;
-					else 
+					if (Funct[4:1] == 4'b1101)	   // MOVIDX Vec
+						controls =     12'b100001000001;
+					else
+						if (Funct[4:1] == 4'b1110) // MOV a reg
+							controls = 12'b000011101001;
+					else
 						if (Funct[4]) //si es que es de tipo Vec con imm 
-							controls = 11'b10000100001;
+							controls = 12'b010000100001;
 						else		
-							controls = 11'b00000101001;
+							controls = 12'b000000101001;
 				else
 					if (Funct[4]) //si es que es de tipo Vec con vec
-							controls = 11'b10000000001;
+							controls = 12'b010000000001;
 					else
-						controls = 11'b00000001001;
+						controls = 12'b000000001001;
 			2'b01:
 				if (Funct[0])
-					controls = 11'b00001111000;
+					controls = 12'b000001111000;
 				else
-					controls = 11'b01001110100;
-			2'b10: controls = 11'b00110100010;
-			default: controls = 11'bxxxxxxxxxxx;
+					controls = 12'b001001110100;
+			2'b10: controls = 12'b000110100010;
+			default: controls = 12'bxxxxxxxxxxxx;
 		endcase
-	assign {VecW, RegSrc, ImmSrc, ALUSrc, MemtoReg, RegW, MemW, Branch, ALUOp} = controls;
+	assign {VecIdxW, VecW, RegSrc, ImmSrc, ALUSrc, MemtoReg, RegW, MemW, Branch, ALUOp} = controls;
 	always @(*)
 		if (ALUOp) begin
 			case (Funct[4:1])
 				4'b1110: ALUControl = 4'b0000; // MOV
-				4'b1101: ALUControl = 4'b1100; // MOVFP
+				4'b1101: ALUControl = 4'b1100; // MOV IDX VEC
 				// Integer number control
 				4'b0100: ALUControl = 4'b0000; // ADD
 				4'b0101: ALUControl = 4'b0001; // SUB
