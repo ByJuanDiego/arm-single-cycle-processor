@@ -63,7 +63,7 @@ module decode (
 		if (ALUOp) begin
 			case (Funct[4:1])
 				4'b1110: ALUControl = 4'b0000; // MOV
-				4'b1101: ALUControl = 4'b1100; // MOV IDX VEC
+				4'b1101: ALUControl = 4'bXXXX; // MOV IDX VEC
 				// Integer number control
 				4'b0100: ALUControl = 4'b0000; // ADD
 				4'b0101: ALUControl = 4'b0001; // SUB
