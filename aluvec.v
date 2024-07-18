@@ -11,7 +11,7 @@ module aluvec (
     input wire [31:0] b_3, // Vector de entrada, elemento 3
     input wire [31:0] b_4, // Vector de entrada, elemento 4
 
-    input wire [2:0]  ALUOp, // Señal de operación de la ALU (0: Suma, 1: Resta, 2: AND, 3: OR)
+    input wire [2:0]  ALUOp,
     output wire [31:0] Result_0, // Resultado de la operación ALU para elemento 0
     output wire [31:0] Result_1, // Resultado de la operación ALU para elemento 1
     output wire [31:0] Result_2, // Resultado de la operación ALU para elemento 2

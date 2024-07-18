@@ -75,7 +75,7 @@ module decode (
 				4'b0110: ALUControl = 4'b0101; // FMUL
 				// Vector control
 				4'b1000: ALUControl = 4'b1000; // VADD
-				4'b1100: ALUControl = 4'b1101; // VADDFP
+				4'b1100: ALUControl = 4'b1100; // VADDFP
 				4'b1001: ALUControl = 4'b1001; // VSUB
 				4'b1010: ALUControl = 4'b1010; // VAND
 				4'b1011: ALUControl = 4'b1011; // VORR
