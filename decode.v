@@ -36,7 +36,7 @@ module decode (
 			2'b00:
 				if (Funct[5])
 					if (Funct[4:1] == 4'b1101)	   // MOVIDX Vec
-						controls =     12'b100001000001;
+						controls =     12'b100011000001;
 					else
 						if (Funct[4:1] == 4'b1110) // MOV a reg
 							controls = 12'b000011101001;
